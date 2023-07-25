@@ -19,7 +19,7 @@ import timeit
 from collections import Counter
 import string
 import random
-import calculations as calc
+import calculations_theme as calc
 import searcher as s1
 import UI_utils as ui_utils
 from wordcloud import STOPWORDS
