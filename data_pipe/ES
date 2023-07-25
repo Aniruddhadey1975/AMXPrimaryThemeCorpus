@@ -1,1 +1,288 @@
 
+from elasticsearch import Elasticsearch
+from elasticsearch.helpers import scan
+import pandas as pd
+import json
+import data_pipe.utils as u
+from datetime import datetime
+
+def query_parser(sq):
+
+    sq = sq.replace("OR", "||")
+
+    return sq
+
+
+
+
+def convert_query_to_elasticsearch(query):
+    # Replace the boolean operators
+    #query = query.replace('AND', '&&').replace('OR', '||').replace('NOT', '!')
+    query = query.replace('"','/"')
+    query = query.replace('AND ','+')
+    query = query.replace('OR','|')
+    query = query.replace('NOT ','-')
+    # print(query)
+    # Wrap the query in a 'query_string' query
+    es_query = {
+        "query": {
+            "simple_query_string": {
+                "query": query,
+                "fields": ["title"],
+                "default_operator": "and"
+            }
+        }
+    }
+
+    return query
+
+def get_articles_ES(ss,ds_list):
+
+
+    # initialize
+    
+    es_selected_df = pd.DataFrame()
+
+    # establish ES connection
+
+    es_connect = u.get_es()
+
+    # default size
+    es_max_hits = 10000
+
+    if not es_connect:
+        
+        return (num_es_records_found, es_selected_df)
+
+    # continue if successfully connected
+
+    paired_dates = u.create_date_range(ss.start_date,ss.end_date)
+
+
+    all_data_df = pd.DataFrame()
+
+    first = True
+
+
+    i = 0
+
+    num_es_records_found  = 0
+    total_num_es_records_found = 0
+    for dates in paired_dates: 
+
+        # there would be a call for multiple loops for same time frame
+
+        # print(f"---------------------------START {i}------------------------------------------")
+
+
+        sources_filter = {}
+
+        sources_filter['terms'] = {"source.domain" : ss.sources_pref}
+
+        sq =  query_parser(ss.searchQuery)
+
+
+  
+        q1 = {
+                "bool": {
+                        "must": [
+                        { "match": { "country": 'us' }},
+                        { "match": { "language":  'en' }},
+                        { "match": { "title":  sq }}, 
+                        
+                        {"range" : {"pub_date" : { "gte": str(dates[0]).split('T')[0], "lte": str(dates[1]).split('T')[0] }}}, 
+
+
+                        
+
+
+                        ], 
+
+                        # "filter" : sources_filter
+                        
+                        },
+
+
+                        }
+
+
+        sq = convert_query_to_elasticsearch(ss.searchQuery)
+
+        q1 = {
+                    
+                        "bool": {
+                        "must": [
+                            {
+                            "query_string": {
+                                            "query": sq,
+                                            "fields": ["title"],
+                                            "default_operator": "and"
+                            }
+                            },
+                            {
+                            "range": {
+                                "pub_date" : { "gte": str(dates[0]).split('T')[0], "lte": str(dates[1]).split('T')[0] }
+                            }
+                            }
+                        ]
+                        }
+                    
+                    }
+        # print("q=",q1)
+
+        # print("~~~~~~~~~~~~~~~~~~~~+++~~~~~~~~~~~~~~~~~~~~~~")
+        # q1 =  {"simple_query_string": {"query": 'Google | Micro* + Apple',"flags": 'OR|AND|PREFIX'}}
+
+        # print("q1=", q1)
+        
+
+
+        search_body = { "query":q1, 
+        # "aggs": {
+        # "article_id": {
+        #     "terms": {
+        #         "field": "article_id"
+        #     }
+        # }} ,  
+        
+        "fields": ["_id","article_id",'url',"pub_date", "title", "location.country", "locations.state",  "language","authors_byline", "summary" , "description", "content", 'source.domain',
+       'sentiment.positive', 'sentiment.negative', 'sentiment.neutral', 'author','reprint'], 
+
+        "_source": False,
+        
+        "sort": [
+
+        # {"pub_date": "asc"},
+        {"_id": "desc"}
+        ]
+        }
+
+        if not first:
+
+            last_pointer = data_raw["hits"]["hits"][0]["sort"]
+                
+            # print("pointer--", last_pointer)
+
+            pass
+            search_body["search_after"]=  last_pointer
+
+
+        # Scan function to get first batch
+        data_raw = es_connect.search(index='amx',body=search_body, size=es_max_hits)
+
+        # print("&&&&&&&&&&&&&&&&&&&&&&")
+
+        # print(data_raw.keys())
+
+      
+
+        # check receipt of data
+
+        num_res = data_raw["hits"]["total"]["value"]
+
+        # print("num_res = ", num_res)
+
+
+        if (num_res): 
+
+            # print(">>>ES num_res=", num_res)
+
+
+            # with open("sample1.json", "w") as outfile:
+
+            #     json.dump(data_raw, outfile)
+
+            df = u.make_df(data_raw)
+
+            # print("----------NEW----------")
+
+            # print(df.head())
+
+            # df.index = df['fields.pub_date']
+
+            # print("CONCATINATING--------------")
+            
+            # check for date 
+
+
+
+            all_data_df = pd.concat([all_data_df,df],ignore_index=True)
+
+
+            # update records counter 
+
+            total_num_es_records_found += num_res
+
+            # print("Num records in ", len(all_data_df))
+
+            # print(all_data_df.head())
+            
+            first = False
+
+
+
+                        # print("pointer--")
+            # last_pointer = data_raw["hits"]["hits"][0]["sort"]
+
+        else: 
+            # print("~~~~~~~~~~~~~~JUMPING OUT")
+            break # jump out of loop
+        
+
+
+        
+        # print(f"---------------------------END {i}------------------------------------------")
+
+
+        # all_data_df['fields.title'] =  all_data_df['fields.title'].apply(u.flatten_list)
+
+        #################################33
+        # realign column names to the API feed - to standardize the names 
+
+        
+        
+        
+    # after all data is collected
+
+    # print(">>>>>>>>>>>>>total ES records : ", total_num_es_records_found)
+
+    # print("ES cols")
+
+    # print(all_data_df.columns)
+    if len(all_data_df):
+
+
+        #         "fields": ["_id","article_id",'url',"pub_date", "title", "location.country", "language","authors_byline", "description", 'source.domain','sentiment.positive', 'sentiment.negative', 'sentiment.neutral'], 
+    
+        columns_remapping = {'fields.article_id': 'articleId','fields.url' : 'url', 'fields.title' : 'title','fields.location.country': 'country','fields.location.state': 'state', 'fields.language' : 'language' ,'fields.summary': 'summary', 'fields.description': 'description', 'fields.content': 'content', 'fields.pub_date': 'pubDate', 'fields.authors_byline': 'author', 'fields.source.domain': 'source' , 'fields.sentiment.neutral': 'sentiment.neutral','fields.sentiment.positive': 'sentiment.positive','fields.sentiment.negative': 'sentiment.negative', 'fields.locations.state' : 'state'   }
+
+    
+        all_data_df = all_data_df.rename(columns=columns_remapping)
+
+        # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+        # print(all_data_df.columns)
+
+        all_data_df.to_csv("ES_all_data.csv")
+
+        imp_cols = ['url', 'articleId', 'country','language', 'pubDate', 'title', 'summary' ,'description', 'content' ,  'source','sentiment.positive', 'sentiment.negative', 'sentiment.neutral', 'author', 'state']
+
+        es_selected_df = pd.DataFrame(columns=imp_cols)
+
+        for c in imp_cols:
+            try:
+                es_selected_df[c] = all_data_df[c].apply(u.flatten_list)
+            except:
+                pass
+        
+
+
+
+    # return by default    
+
+    es_selected_df.to_csv('./es_es_selected_df.csv')
+    
+    return (total_num_es_records_found, es_selected_df)
+
+
+
