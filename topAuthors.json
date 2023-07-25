@@ -1,0 +1,41 @@
+{
+  "title": "View top authors",
+  "subtitle": "subtitle",
+  "summary": {
+    "label": "label",
+    "sublabel": "sublabel"
+  },
+  "data": [
+    {
+      "label": "Malcolm Owen",
+      "value": 8
+    },
+    {
+      "label": "Andrew Orr",
+      "value": 5
+    },
+    {
+      "label": "Ben",
+      "value": 4
+    },
+    {
+      "label": "Samuel Lamba",
+      "value": 3
+    },
+    {
+      "label": "Brian Heater",
+      "value": 2
+    },
+    {
+      "label": "Ronan Byrne",
+      "value": 1
+    }
+  ],
+  "labels": [
+    {
+      "label": "label",
+      "value": "value",
+      "color": "color"
+    }
+  ]
+}

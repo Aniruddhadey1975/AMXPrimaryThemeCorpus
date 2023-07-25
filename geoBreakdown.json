@@ -1,0 +1,37 @@
+{
+  "title": "View Geographic breakdown",
+  "subtitle": "subtitle",
+  "summary": {
+    "label": "label",
+    "sublabel": "sublabel"
+  },
+  "data": [
+    {
+      "label": "CA",
+      "value": 16
+    },
+    {
+      "label": "NY",
+      "value": 5
+    },
+    {
+      "label": "PA",
+      "value": 3
+    },
+    {
+      "label": "OH",
+      "value": 3
+    },
+    {
+      "label": "FL",
+      "value": 2
+    }
+  ],
+  "labels": [
+    {
+      "label": "label",
+      "value": "value",
+      "color": "color"
+    }
+  ]
+}

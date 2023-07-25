@@ -1,0 +1,19 @@
+(("ASUS" OR "ZenFone" OR "Zenbook Flip" OR "Zenbook UX360CA" OR "Vivobook" OR "ZenBook" OR "ZenPad" OR "ZenWatch" OR "ZenBeam" OR "ZenBo" OR "VivoMini" OR "Zen AiO" OR "Vivo AiO" OR "Portable AiO" OR "VivoTab" OR "Vivo Tab") OR (("ASUS") AND ("Chromebook" OR "Transformer" OR "STRIX" OR "Nexus" OR "FLIP" OR "SWIFT" OR "Chromebit" OR "Republic of Gamers" OR "ROG" OR "Chromebox" OR "P3B" OR "MeMo Pad" OR "B1MR")))
+
+2023-01-01
+2023-01-02 
+
+(Nestle OR PepsiCo OR pepsi OR "Procter and Gamble" OR "P and G" OR "JBS S A" OR "JBS" OR Unilever OR "Anheuser Busch InBev" OR "AB InBev" OR "Tyson Foods" OR "LVMH" OR Nike OR "Imperial Brands")
+
+2023-01-01
+2023-01-02 
+
+("American Airlines" OR "United Airlines" OR "Delta Air Lines" OR "Southwest Airlines" OR "Alaska Airlines" OR "Jetblue Airlines" OR "Spirit Airlines" OR "SkyWest" OR "Frontier Airlines" OR "Allegiant Air")
+
+2023-01-01
+2023-01-02 
+
+"Glaxo Smith Kline" OR GlaxoSmithKline OR GSK OR Moderna
+
+2023-01-01
+2023-01-02

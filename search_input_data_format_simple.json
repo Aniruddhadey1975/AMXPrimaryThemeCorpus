@@ -1,0 +1,26 @@
+{
+    "searchQuery": "Mazda AND MNAO OR \"North American Operations\" OR \"Dan Ryan\"",
+    "start_date": "2022-05-31",
+    "end_date": "2023-05-31",
+    "lang_list": {
+        "EN": true,
+        "DE": false
+    },
+    "media_types_list": [
+        "print",
+        "online"
+    ],
+    "loc_list": {
+        "US": true,
+        "UK": false
+    },
+    "hybrid": false,
+    "sources_pref": [],
+    "keyword_in_title_include_exclude": null,
+    "keyword_in_title": [],
+    "prestored_end_date": "2023-05-31",
+    "searchID": "XX",
+    "search_type": "simple_search",
+    "intitated_from_page": "",
+    "userID": "123"
+}

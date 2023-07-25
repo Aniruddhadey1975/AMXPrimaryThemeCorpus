@@ -1,0 +1,29 @@
+{
+    "searchQuery": "apple",
+    "start_date": "2023-05-01",
+    "end_date": "2023-05-02",
+    "lang_list": {
+        "EN": true,
+        "DE": false
+    },
+    "media_types_list": [
+        "print",
+        "online"
+    ],
+    "loc_list": {
+        "US": true,
+        "UK": false
+    },
+    "sources_pref": [],
+    "keyword_in_title_include_exclude": null,
+    "keyword_in_title": [],
+    "no_opinions": false,
+    "non_news": false,
+    "no_press_release": false,
+    "with_less_reach": false,
+    "prestored_end_date": "2023-05-31",
+    "searchID": "XX",
+    "search_type": "simple_search",
+    "intitated_from_page": "",
+    "userID": "123"
+}

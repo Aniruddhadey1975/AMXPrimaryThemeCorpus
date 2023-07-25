@@ -1,0 +1,25 @@
+{
+  "title": "Media distribution",
+  "subtitle": "subtitle",
+  "summary": {
+    "label": "label",
+    "sublabel": "sublabel"
+  },
+  "data": [
+    {
+      "label": "Online",
+      "value": 0.9985443959243085
+    },
+    {
+      "label": "Print",
+      "value": 0.001455604075691412
+    }
+  ],
+  "labels": [
+    {
+      "label": "label",
+      "value": "value",
+      "color": "color"
+    }
+  ]
+}

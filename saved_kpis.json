@@ -1,0 +1,12 @@
+{
+    "searchID": "XX",
+    "total_articles": 12032,
+    "total_sent_counts": {
+        "positive": 1000,
+        "negative": 1000,
+        "neutral": 1000
+    },
+    "total_reach": 10000,
+    "total_ave": 925,
+    "vol": 10
+}

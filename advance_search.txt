@@ -1,0 +1,10 @@
+all
+
+Pfizer, Moderna
+
+any
+Vaccine, "Covid Vaccine"
+
+None
+
+"J&J", "johnson&Johnson"

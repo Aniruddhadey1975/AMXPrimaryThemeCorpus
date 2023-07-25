@@ -1,0 +1,30 @@
+{
+    "searchID": "XXX",
+    "search_type": "advance",
+    "from_dashboard" : "home", 
+
+    "search_settings" : 
+    {
+    "searchQuery": "(Nestle OR PepsiCo OR pepsi OR "LVMH" OR Nike OR "Imperial Brands")",
+    "advanceSearchQuery": {"allOfthese" : ["pfizer","moderna"], "noneOfthese" : ["J&J", "Johnson & Johnson"] , "anyofthese": ["vaccine", "covid vaccine"], "sources_pref": ["cnn.com", "msn.com"],},
+
+    "start_date": "2023-01-01",
+    "end_date": "2023-01-02",
+    "lang_list": {
+        "EN": true,
+        "DE": false
+    },
+    "media_types_list": [
+        "print",
+        "online"
+    ],
+    "loc_list": {
+        "US": true,
+        "UK": false
+    },
+
+    
+
+}
+    
+}
